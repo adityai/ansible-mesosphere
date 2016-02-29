@@ -5,6 +5,7 @@
   vars:
     - pri_domain_name: 'vagrant.local'
   roles:
+    - role: ansible-ntp
     - role: ansible-oracle-java8
     - role: ansible-zookeeper
     - role: ansible-mesosphere

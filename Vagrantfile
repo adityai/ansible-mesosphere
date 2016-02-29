@@ -8,25 +8,33 @@
 N = 3
 Vagrant.configure(2) do |config|
   config.vm.box = "mrlesmithjr/trusty64"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "1024"
+  end
   (1..N).each do |i|
     config.vm.define "node#{i}" do |node|
       node.vm.hostname = "node#{i}"
       node.vm.network :private_network, ip: "192.168.202.20#{i}"
-    end
-    config.vm.provider "virtualbox" do |vb|
-      vb.memory = "1024"
-    end
-    if i == N
-      config.vm.provision "ansible" do |ansible|
-        ansible.groups = {
-          "zookeeper-nodes" => [
-            "node1",
-            "node2",
-            "node3"
-          ]
-        }
-        ansible.playbook = "playbook.yml"
+
+      if i == N
+        config.vm.provision "ansible" do |ansible|
+          ansible.limit = "all"
+          ansible.groups = {
+            "zookeeper-nodes" => [
+              "node1",
+              "node2",
+              "node3"
+            ],
+            "zookeeper-master-nodes" => [
+              "node1",
+              "node2",
+              "node3"
+            ]
+          }
+          ansible.playbook = "playbook.yml"
+        end
       end
+
     end
   end
 end
