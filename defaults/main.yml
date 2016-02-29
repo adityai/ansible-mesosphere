@@ -1,0 +1,5 @@
+---
+# defaults file for ansible-mesosphere
+mesosphere_debian_repo: 'deb http://repos.mesosphere.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main'
+mesosphere_debian_repo_key_id: 'E56151BF'
+mesosphere_debian_repo_key_server: 'hkp://keyserver.ubuntu.com:80'

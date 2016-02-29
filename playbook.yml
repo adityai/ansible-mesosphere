@@ -1,0 +1,10 @@
+---
+- name: Installs mesosphere
+  hosts: all
+  become: true
+  vars:
+  roles:
+    - role: ansible-oracle-java8
+    - role: ansible-zookeeper
+    - role: ansible-mesosphere
+  tasks:
