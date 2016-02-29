@@ -8,7 +8,6 @@
     mode: 0644
   notify:
     - restart zookeeper
-  when: inventory_hostname in groups[zookeeper_cluster_master_group]
 
 - name: config_zookeeper | configuring zookeeper zoo.cfg
   template:
@@ -19,4 +18,3 @@
     mode: 0644
   notify:
     - restart zookeeper
-  when: inventory_hostname in groups[zookeeper_cluster_master_group]
