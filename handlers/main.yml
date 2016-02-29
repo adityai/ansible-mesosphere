@@ -1,2 +1,6 @@
 ---
 # handlers file for ansible-mesosphere
+- name: restart zookeeper
+  service:
+    name: "zookeeper"
+    state: restarted
