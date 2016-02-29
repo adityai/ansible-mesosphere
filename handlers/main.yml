@@ -4,7 +4,12 @@
   service:
     name: "mesos-master"
     state: restarted
-    
+
+- name: restart mesos-slave
+  service:
+    name: "mesos-slave"
+    state: restarted
+
 - name: restart zookeeper
   service:
     name: "zookeeper"

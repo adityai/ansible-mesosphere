@@ -10,6 +10,17 @@
     - restart mesos-master
   when: inventory_hostname in groups[zookeeper_cluster_master_group]
 
+- name: config_mesos | configuring zookeeper
+  template:
+    src: "etc/mesos/zk.j2"
+    dest: "/etc/mesos/zk"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart mesos-slave
+  when: inventory_hostname in groups[zookeeper_cluster_slave_group]
+
 - name: config_mesos | configuring mesos quorom
   template:
     src: "etc/mesos-master/quorum.j2"
@@ -35,3 +46,33 @@
     group: root
     mode: 0640
   when: inventory_hostname in groups[zookeeper_cluster_master_group]
+
+- name: config_mesos | disabling zookeeper (on slave-nodes)
+  service:
+    name: "zookeeper"
+    state: stopped
+  when: inventory_hostname in groups[zookeeper_cluster_slave_group]
+
+- name: config_mesos | setting zookeeper service to manual (on slave-nodes)
+  template:
+    src: "etc/init/zookeeper.override.j2"
+    dest: "/etc/init/zookeeper.override"
+    owner: root
+    group: root
+    mode: 0640
+  when: inventory_hostname in groups[zookeeper_cluster_slave_group]
+
+- name: config_mesos | disabling mesos-master (on slave-nodes)
+  service:
+    name: "mesos-master"
+    state: stopped
+  when: inventory_hostname in groups[zookeeper_cluster_slave_group]
+
+- name: config_mesos | setting mesos-slave service to manual (on slave-nodes)
+  template:
+    src: "etc/init/mesos-master.override.j2"
+    dest: "/etc/init/mesos-master.override"
+    owner: root
+    group: root
+    mode: 0640
+  when: inventory_hostname in groups[zookeeper_cluster_slave_group]
