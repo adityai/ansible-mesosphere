@@ -21,7 +21,7 @@
     - restart mesos-slave
   when: inventory_hostname in groups[zookeeper_cluster_slave_group]
 
-- name: config_mesos | configuring mesos
+- name: config_mesos | configuring mesos (master-nodes)
   template:
     src: "etc/mesos-master/{{ item }}.j2"
     dest: "/etc/mesos-master/{{ item }}"
@@ -36,6 +36,19 @@
     - 'quorum'
   when: inventory_hostname in groups[zookeeper_cluster_master_group]
 
+- name: config_mesos | configuring mesos (slave-nodes)
+  template:
+    src: "etc/mesos-slave/{{ item }}.j2"
+    dest: "/etc/mesos-slave/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart mesos-slave
+  with_items:
+    - 'hostname'
+    - 'ip'
+  when: inventory_hostname in groups[zookeeper_cluster_slave_group]
 
 - name: config_mesos | disabling mesos-slave (on master-nodes)
   service:
