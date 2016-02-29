@@ -21,16 +21,21 @@
     - restart mesos-slave
   when: inventory_hostname in groups[zookeeper_cluster_slave_group]
 
-- name: config_mesos | configuring mesos quorom
+- name: config_mesos | configuring mesos
   template:
-    src: "etc/mesos-master/quorum.j2"
-    dest: "/etc/mesos-master/quorum"
+    src: "etc/mesos-master/{{ item }}.j2"
+    dest: "/etc/mesos-master/{{ item }}"
     owner: root
     group: root
     mode: 0644
   notify:
     - restart mesos-master
+  with_items:
+    - 'hostname'
+    - 'ip'
+    - 'quorum'
   when: inventory_hostname in groups[zookeeper_cluster_master_group]
+
 
 - name: config_mesos | disabling mesos-slave (on master-nodes)
   service:
