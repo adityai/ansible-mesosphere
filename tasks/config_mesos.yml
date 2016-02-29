@@ -6,6 +6,8 @@
     owner: root
     group: root
     mode: 0644
+  notify:
+    - restart mesos-master
   when: inventory_hostname in groups[zookeeper_cluster_master_group]
 
 - name: config_mesos | configuring mesos quorom
@@ -15,6 +17,8 @@
     owner: root
     group: root
     mode: 0644
+  notify:
+    - restart mesos-master
   when: inventory_hostname in groups[zookeeper_cluster_master_group]
 
 - name: config_mesos | disabling mesos-slave (on master-nodes)
