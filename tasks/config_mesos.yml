@@ -6,7 +6,7 @@
     owner: root
     group: root
     mode: 0644
-  when: inventory_hostname in groups['zookeeper_cluster_master_group']
+  when: inventory_hostname in groups[zookeeper_cluster_master_group]
 
 - name: config_mesos | configuring mesos quorom
   template:
@@ -15,13 +15,13 @@
     owner: root
     group: root
     mode: 0644
-  when: inventory_hostname in groups['zookeeper_cluster_master_group']
+  when: inventory_hostname in groups[zookeeper_cluster_master_group]
 
 - name: config_mesos | disabling mesos-slave (on master-nodes)
   service:
     name: "mesos-slave"
     state: stopped
-  when: inventory_hostname in groups['zookeeper_cluster_master_group']
+  when: inventory_hostname in groups[zookeeper_cluster_master_group]
 
 - name: config_mesos | setting mesos-slave service to manual (on master-nodes)
   template:
@@ -30,4 +30,4 @@
     owner: root
     group: root
     mode: 0640
-  when: inventory_hostname in groups['zookeeper_cluster_master_group']
+  when: inventory_hostname in groups[zookeeper_cluster_master_group]
