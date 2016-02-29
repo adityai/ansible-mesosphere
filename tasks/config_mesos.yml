@@ -10,8 +10,8 @@
 
 - name: config_mesos | configuring mesos quorom
   template:
-    src: "etc/mesos-master/quorom.j2"
-    dest: "/etc/mesos-master/quorom"
+    src: "etc/mesos-master/quorum.j2"
+    dest: "/etc/mesos-master/quorum"
     owner: root
     group: root
     mode: 0644
